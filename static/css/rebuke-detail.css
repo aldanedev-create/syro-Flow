@@ -1,0 +1,211 @@
+    .rebuke-detail {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px 0;
+    }
+
+    .rebuke-header {
+        text-align: center;
+        padding: 20px 0;
+    }
+    .rebuke-label {
+        display: inline-block;
+        background: #dc3545;
+        color: white;
+        padding: 6px 20px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+    .rebuke-label i {
+        margin-right: 6px;
+    }
+    .rebuke-title {
+        font-size: 38px;
+        font-weight: 800;
+        line-height: 1.2;
+        margin: 0 0 15px;
+        color: var(--text-color);
+    }
+    .rebuke-meta {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        font-size: 15px;
+        color: var(--text-muted);
+    }
+    .rebuke-meta i {
+        margin-right: 5px;
+    }
+
+    .rebuke-warning {
+        display: flex;
+        gap: 15px;
+        align-items: flex-start;
+        padding: 20px 25px;
+        background: #f8d7da;
+        border-left: 4px solid #dc3545;
+        border-radius: 8px;
+        margin: 20px 0 30px;
+        color: #721c24;
+    }
+    .rebuke-warning i {
+        font-size: 24px;
+        color: #dc3545;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .rebuke-warning div {
+        font-size: 15px;
+        line-height: 1.6;
+    }
+    .rebuke-warning strong {
+        display: block;
+        margin-bottom: 3px;
+    }
+
+    .rebuke-image {
+        margin: 30px 0 40px;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--card-bg);
+    }
+    .rebuke-image img {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    .rebuke-image figcaption {
+        padding: 12px 20px;
+        font-size: 14px;
+        color: var(--text-muted);
+        text-align: center;
+        background: var(--card-bg);
+    }
+
+    .rebuke-content {
+        font-size: 18px;
+        line-height: 1.9;
+        color: var(--text-color);
+        margin-bottom: 40px;
+    }
+    .rebuke-content h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 40px 0 20px;
+    }
+    .rebuke-content h3 {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 30px 0 15px;
+    }
+    .rebuke-content p {
+        margin-bottom: 20px;
+    }
+    .rebuke-content blockquote {
+        border-left: 4px solid #dc3545;
+        padding-left: 20px;
+        margin: 20px 0;
+        font-style: italic;
+        color: var(--text-muted);
+    }
+
+    .rebuke-reflection {
+        background: #e8f4f8;
+        padding: 25px 30px;
+        border-radius: 12px;
+        margin: 30px 0;
+    }
+    .rebuke-reflection h3 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0 0 15px;
+        color: var(--text-color);
+    }
+    .rebuke-reflection ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    .rebuke-reflection li {
+        margin-bottom: 8px;
+        line-height: 1.6;
+        color: var(--text-muted);
+    }
+
+    .rebuke-tags {
+        margin: 30px 0;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    .tags-label {
+        font-weight: 600;
+        color: var(--text-color);
+    }
+    .tag {
+        display: inline-block;
+        padding: 4px 14px;
+        background: var(--bg-color);
+        color: var(--text-color);
+        border-radius: 20px;
+        font-size: 14px;
+        text-decoration: none;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s;
+    }
+    .tag:hover {
+        background: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+
+    .rebuke-navigation {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
+    }
+    .rebuke-navigation .nav-link {
+        padding: 10px 20px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        text-decoration: none;
+        border-radius: 8px;
+        transition: all 0.3s;
+        border: 1px solid var(--border-color);
+    }
+    .rebuke-navigation .nav-link:hover {
+        background: #dc3545;
+        color: white;
+        border-color: #dc3545;
+    }
+
+    @media (max-width: 768px) {
+        .rebuke-title {
+            font-size: 28px;
+        }
+        .rebuke-content {
+            font-size: 16px;
+        }
+        .rebuke-reflection {
+            padding: 20px;
+        }
+        .rebuke-navigation {
+            flex-direction: column;
+            align-items: stretch;
+        }
+        .rebuke-navigation .nav-link {
+            text-align: center;
+        }
+        .rebuke-warning {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+    }
