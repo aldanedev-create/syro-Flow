@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ goal.title }} - {{ site_name }}{% endblock %}
+{% block meta_description %}{{ page_description }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rebuke-detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="goal-detail">
+    <a href="{% url 'donations:goals' %}" class="back-link">
+        <i class="fas fa-arrow-left"></i> Back to Goals
+    </a>
+
+    <h1>{{ goal.title }}</h1>
+
+    <div class="goal-progress">
+        <div class="goal-progress-bar" style="width: {{ progress_percentage }}%;"></div>
+    </div>
+    <p class="card-meta">
+        {{ goal.raised_amount }} {{ goal.currency }} raised of {{ goal.target_amount }} {{ goal.currency }}
+        {% if not is_completed %}
+        &middot; {{ remaining }} {{ goal.currency }} to go
+        {% else %}
+        &middot; Goal reached!
+        {% endif %}
+    </p>
+
+    <div class="goal-description">
+        {{ goal.description|linebreaks }}
+    </div>
+
+    <a href="{% url 'donations:donate' %}" class="btn btn-primary">Donate to this goal</a>
+</div>
+{% endblock %}

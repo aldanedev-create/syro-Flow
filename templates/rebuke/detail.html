@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} - {{ site_name }}{% endblock %}
+{% block meta_description %}{{ post.excerpt|default:post.seo_description }}{% endblock %}
+
+{% block content %}
+<article class="rebuke-detail">
+    <!-- Header -->
+    <header class="rebuke-header">
+        <div class="rebuke-label">
+            <i class="fas fa-exclamation-triangle"></i> Rebuke
+        </div>
+        <h1 class="rebuke-title">{{ post.title }}</h1>
+        <div class="rebuke-meta">
+            <span class="rebuke-date">
+                <i class="far fa-calendar-alt"></i> {{ post.published_at|date:"F d, Y" }}
+            </span>
+            <span class="rebuke-author">
+                <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+            </span>
+            <span class="rebuke-read-time">
+                <i class="far fa-clock"></i> {{ post.get_reading_time }} min read
+            </span>
+        </div>
+    </header>
+
+    <!-- Warning Banner -->
+    <div class="rebuke-warning">
+        <i class="fas fa-exclamation-circle"></i>
+        <div>
+            <strong>Read with an open heart:</strong>
+            This message is intended for correction and growth. Please approach it with prayer and humility.
+        </div>
+    </div>
+
+    <!-- Featured Image -->
+    {% if post.featured_image %}
+    <div class="rebuke-image">
+        <img src="{{ post.featured_image.file.url }}" alt="{{ post.featured_image.alt_text|default:post.title }}" loading="lazy">
+        {% if post.featured_image.caption %}
+        <figcaption>{{ post.featured_image.caption }}</figcaption>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    <!-- Content -->
+    <div class="rebuke-content">
+        {{ post.content|safe }}
+    </div>
+
+    <!-- Reflection Questions (Optional) -->
+    <div class="rebuke-reflection">
+        <h3>Reflection Questions</h3>
+        <ul>
+            <li> I am the Lord your God</li>
+            <li> Are you with me or against me Son</li>
+            <li> I treat you Like  a Brother my Freind but no frendship if ya satan</li>
+            <li>God says forgive infinity times a trillon times a billon</li>
+        </ul>
+    </div>
+
+    <!-- Tags -->
+    {% if post.tags.exists %}
+    <div class="rebuke-tags">
+        <span class="tags-label"><i class="fas fa-tags"></i> Tags:</span>
+        {% for tag in post.tags.all %}
+        <a href="{% url 'posts:tag' slug=tag.slug %}" class="tag">{{ tag.name }}</a>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Navigation -->
+    <nav class="rebuke-navigation">
+        <a href="{% url 'rebuke:index' %}" class="nav-link">
+            <i class="fas fa-arrow-left"></i> Back to Rebukes
+        </a>
+        {% if prev_post %}
+        <a href="{% url 'rebuke:detail' slug=prev_post.slug %}" class="nav-link">
+            <i class="fas fa-arrow-left"></i> Previous
+        </a>
+        {% endif %}
+        {% if next_post %}
+        <a href="{% url 'rebuke:detail' slug=next_post.slug %}" class="nav-link">
+            Next <i class="fas fa-arrow-right"></i>
+        </a>
+        {% endif %}
+    </nav>
+</article>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rebuke-detail.css' %}">
+{% endblock %}

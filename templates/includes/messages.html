@@ -1,0 +1,34 @@
+{% load static %}
+{% if messages %}
+<div class="messages-container" role="alert" aria-live="polite">
+    {% for message in messages %}
+    <div class="message message-{{ message.tags }}" data-dismissible="true">
+        <div class="message-icon">
+            {% if message.tags == 'success' %}
+            <i class="fas fa-check-circle"></i>
+            {% elif message.tags == 'error' or message.tags == 'danger' %}
+            <i class="fas fa-exclamation-circle"></i>
+            {% elif message.tags == 'warning' %}
+            <i class="fas fa-exclamation-triangle"></i>
+            {% else %}
+            <i class="fas fa-info-circle"></i>
+            {% endif %}
+        </div>
+        <div class="message-content">
+            <span class="message-text">{{ message }}</span>
+        </div>
+        <button class="message-close" aria-label="Dismiss message">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    {% endfor %}
+</div>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/messages.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/messages.js' %}" defer></script>
+{% endblock %}
+{% endif %}

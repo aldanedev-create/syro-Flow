@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ media_item.title }} - Gallery - {{ site_name }}{% endblock %}
+{% block meta_description %}{{ media_item.caption|default:media_item.description }}{% endblock %}
+{% block og_image %}{{ media_item.file.url }}{% endblock %}
+
+{% block content %}
+<div class="image-detail">
+    <!-- Back Navigation -->
+    <div class="image-nav-top">
+        <a href="{% url 'media_library:gallery' %}" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Gallery
+        </a>
+    </div>
+
+    <!-- Image Display -->
+    <div class="image-display"
+         data-title="{{ media_item.title }}"
+         data-file-url="{{ media_item.file.url }}"
+         data-site-name="{{ site_name }}"
+         data-delete-url="{% url 'media_library:delete_media' pk=media_item.pk %}"
+         data-gallery-url="{% url 'media_library:gallery' %}"
+         data-csrf-token="{{ csrf_token }}">
+        <img src="{{ media_item.file.url }}" 
+             alt="{{ media_item.alt_text|default:media_item.title }}" 
+             class="main-image">
+        
+        <!-- Image Controls -->
+        <div class="image-controls">
+            <button onclick="downloadImage()" class="control-btn" title="Download">
+                <i class="fas fa-download"></i>
+            </button>
+            <button onclick="openFullscreen()" class="control-btn" title="Fullscreen">
+                <i class="fas fa-expand"></i>
+            </button>
+            <button onclick="shareImage()" class="control-btn" title="Share">
+                <i class="fas fa-share-alt"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Image Details -->
+    <div class="image-details">
+        <h1 class="image-title">{{ media_item.title }}</h1>
+        
+        {% if media_item.caption %}
+        <div class="image-caption">{{ media_item.caption }}</div>
+        {% endif %}
+        
+        {% if media_item.description %}
+        <div class="image-description">{{ media_item.description }}</div>
+        {% endif %}
+        
+        <div class="image-metadata">
+            <div class="meta-item">
+                <i class="fas fa-calendar-alt"></i>
+                <span>Uploaded: {{ media_item.created_at|date:"F d, Y" }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-user"></i>
+                <span>By: {{ media_item.uploaded_by.get_full_name|default:media_item.uploaded_by.username }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-image"></i>
+                <span>
+                    {% if media_item.width and media_item.height %}
+                        {{ media_item.width }} × {{ media_item.height }} px
+                    {% else %}
+                        {{ media_item.get_file_size_display }}
+                    {% endif %}
+                </span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-file"></i>
+                <span>{{ media_item.get_file_size_display }}</span>
+            </div>
+            <div class="meta-item">
+                <i class="fas fa-tag"></i>
+                <span>{{ media_item.get_media_type_display }}</span>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        {% if media_item.categories.exists %}
+        <div class="image-categories">
+            <span class="categories-label"><i class="fas fa-folder"></i> Categories:</span>
+            {% for category in media_item.categories.all %}
+            <a href="{% url 'media_library:category' slug=category.slug %}" class="category-tag">
+                {{ category.name }}
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Alt Text -->
+        {% if media_item.alt_text %}
+        <div class="image-alt-text">
+            <strong>Alt Text:</strong> {{ media_item.alt_text }}
+        </div>
+        {% endif %}
+
+        <!-- Usage (if used in posts) -->
+        {% if media_item.posts.exists %}
+        <div class="image-usage">
+            <h4>Used in:</h4>
+            <ul>
+                {% for post in media_item.posts.all %}
+                <li>
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                    ({{ post.published_at|date:"F d, Y" }})
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Related Images -->
+    {% if related_media %}
+    <section class="related-images">
+        <h3 class="related-title">Related Images</h3>
+        <div class="related-grid">
+            {% for item in related_media %}
+            <a href="{% url 'media_library:detail' pk=item.pk %}" class="related-item">
+                <img src="{{ item.file.url }}" alt="{{ item.alt_text|default:item.title }}" loading="lazy">
+                <div class="related-item-info">
+                    <span class="related-item-title">{{ item.title }}</span>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Admin Actions -->
+    {% if user.is_staff %}
+    <div class="admin-actions">
+        <a href="{% url 'admin:media_library_media_change' media_item.pk %}" class="btn btn-secondary">
+            <i class="fas fa-edit"></i> Edit in Admin
+        </a>
+        <button onclick="deleteImage()" class="btn btn-danger">
+            <i class="fas fa-trash"></i> Delete
+        </button>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/gallery-detail.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/gallery-detail.js' %}" defer></script>
+{% endblock %}

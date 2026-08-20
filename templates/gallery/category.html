@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - Gallery - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Gallery: {{ category.name }}</h1>
+    {% if category.description %}
+    <p class="page-description">{{ category.description }}</p>
+    {% endif %}
+</div>
+
+<div class="gallery-toolbar">
+    <div class="category-filters">
+        <a href="{% url 'media_library:gallery' %}" class="filter-link">All</a>
+        <a href="{% url 'media_library:category' slug=category.slug %}" class="filter-link active">
+            {{ category.name }}
+        </a>
+    </div>
+</div>
+
+{% if media_items %}
+<div class="gallery-grid">
+    {% for item in media_items %}
+    <a href="{% url 'media_library:detail' pk=item.pk %}" class="gallery-item">
+        <div class="gallery-image-wrapper">
+            <img src="{{ item.file.url }}" alt="{{ item.alt_text|default:item.title }}" loading="lazy">
+            <div class="gallery-overlay">
+                <div class="gallery-overlay-content">
+                    <h4 class="gallery-item-title">{{ item.title }}</h4>
+                    {% if item.caption %}
+                    <p class="gallery-item-caption">{{ item.caption|truncatewords:10 }}</p>
+                    {% endif %}
+                    <span class="gallery-item-view"><i class="fas fa-eye"></i> View</span>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+{% include 'includes/pagination.html' %}
+
+{% else %}
+<div class="empty-state text-center">
+    <i class="fas fa-images"></i>
+    <h3>No images in this category</h3>
+    <p>Check back soon for new media.</p>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+{% endblock %}

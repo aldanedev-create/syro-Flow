@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ site_name }} - {{ site_description }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <h1 class="hero-title">{{ site_name }}</h1>
+        <p class="hero-subtitle">{{ site_description }}</p>
+        <div class="hero-actions">
+            <a href="{% url 'posts:list' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-book-open"></i> Read Posts
+            </a>
+            <a href="{% url 'donations:index' %}" class="btn btn-secondary btn-lg">
+                <i class="fas fa-hand-holding-heart"></i> Support Us
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Recent Posts -->
+<section class="section recent-posts">
+    <div class="section-header">
+        <h2 class="section-title">Recent Posts</h2>
+        <a href="{% url 'posts:list' %}" class="btn btn-link">View All <i class="fas fa-arrow-right"></i></a>
+    </div>
+    
+    {% if recent_posts %}
+    <div class="posts-grid">
+        {% for post in recent_posts %}
+        <div class="post-card">
+            {% if post.featured_image %}
+            <div class="post-card-image">
+                <img src="{{ post.featured_image.file.url }}" alt="{{ post.featured_image.alt_text|default:post.title }}">
+            </div>
+            {% endif %}
+            <div class="post-card-body">
+                {% if post.category %}
+                <span class="post-card-category">{{ post.category.name }}</span>
+                {% endif %}
+                <h3 class="post-card-title">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </h3>
+                <p class="post-card-excerpt">{{ post.excerpt|truncatewords:25 }}</p>
+                <div class="post-card-meta">
+                    <span class="post-card-date">
+                        <i class="far fa-calendar-alt"></i> {{ post.published_at|date:"M d, Y" }}
+                    </span>
+                    <span class="post-card-read-time">
+                        <i class="far fa-clock"></i> {{ post.get_reading_time }} min read
+                    </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-muted">No posts published yet. Check back soon!</p>
+    {% endif %}
+</section>
+
+<!-- Features -->
+<section class="section features">
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-pen-fancy"></i>
+            </div>
+            <h3 class="feature-title">Teachings & Articles</h3>
+            <p class="feature-description">
+                Explore articles, teachings, and spiritual insights to grow in your faith.
+            </p>
+            <a href="{% url 'posts:list' %}" class="feature-link">Read More <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-images"></i>
+            </div>
+            <h3 class="feature-title">Gallery</h3>
+            <p class="feature-description">
+                View images and media from our community and events.
+            </p>
+            <a href="{% url 'media_library:gallery' %}" class="feature-link">View Gallery <i class="fas fa-arrow-right"></i></a>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon">
+                <i class="fas fa-hand-holding-heart"></i>
+            </div>
+            <h3 class="feature-title">Support Our Mission</h3>
+            <p class="feature-description">
+                Your donations help us continue our work and reach more people.
+            </p>
+            <a href="{% url 'donations:index' %}" class="feature-link">Donate Now <i class="fas fa-arrow-right"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- About Preview -->
+<section class="section about-preview">
+    <div class="about-preview-content">
+        <h2 class="section-title">About {{ site_name }}</h2>
+        <p>
+            {{ site_settings.about_text|default:"We are dedicated to sharing teachings, building community, and making a positive impact." }}
+        </p>
+        <a href="{% url 'pages:detail' slug='about' %}" class="btn btn-primary">
+            Learn More <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}

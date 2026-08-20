@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rebukes - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Rebukes</h1>
+    <p class="page-description">
+        Bold teachings and corrections for spiritual growth and accountability.
+    </p>
+</div>
+
+<!-- Category Description -->
+<div class="category-intro">
+    <div class="category-icon">
+        <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <div class="category-text">
+        <p>
+            Obey the Lord or Die with your god
+        </p>
+    </div>
+</div>
+
+<!-- Posts Grid -->
+{% if posts %}
+<div class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card rebuke-card">
+        {% if post.featured_image %}
+        <div class="post-card-image">
+            <img src="{{ post.featured_image.file.url }}" alt="{{ post.featured_image.alt_text|default:post.title }}" loading="lazy">
+        </div>
+        {% endif %}
+        <div class="post-card-body">
+            <span class="post-card-category rebuke-category">
+                <i class="fas fa-exclamation-triangle"></i> {{ post.category.name }}
+            </span>
+            <h2 class="post-card-title">
+                <a href="{% url 'rebuke:detail' slug=post.slug %}">{{ post.title }}</a>
+            </h2>
+            <p class="post-card-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+            <div class="post-card-meta">
+                <span class="post-card-date">
+                    <i class="far fa-calendar-alt"></i> {{ post.published_at|date:"M d, Y" }}
+                </span>
+                <span class="post-card-author">
+                    <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+                </span>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+{% include 'includes/pagination.html' %}
+
+{% else %}
+<div class="empty-state text-center">
+    <i class="fas fa-exclamation-triangle"></i>
+    <h3>No rebukes published yet</h3>
+    <p>Check back soon for teachings and corrections.</p>
+</div>
+{% endif %}
+
+<!-- Navigation to other categories -->
+<div class="category-nav">
+    <h4>Explore Other Categories</h4>
+    <div class="category-links">
+        {% for category in nav_categories %}
+            {% if category.slug != 'rebuke' %}
+            <a href="{% url 'posts:category' slug=category.slug %}" class="category-link">
+                <i class="fas fa-folder"></i> {{ category.name }}
+            </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rebuke.css' %}">
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pages - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Pages</h1>
+</div>
+
+{% if pages %}
+<ul class="pages-list">
+    {% for page in pages %}
+    <li>
+        <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+        {% if page.excerpt %}
+        <p class="text-muted">{{ page.excerpt }}</p>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<div class="empty-state text-center">
+    <h3>No pages found</h3>
+</div>
+{% endif %}
+{% endblock %}

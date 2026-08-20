@@ -1,0 +1,84 @@
+{% load static %}
+{% if is_paginated %}
+<nav class="pagination" role="navigation" aria-label="Pagination">
+    <ul class="pagination-list">
+        <!-- Previous Page -->
+        {% if page_obj.has_previous %}
+        <li class="pagination-item">
+            <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
+               class="pagination-link pagination-prev" 
+               aria-label="Previous page">
+                <i class="fas fa-chevron-left"></i>
+                <span class="pagination-label">Previous</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="pagination-item disabled">
+            <span class="pagination-link pagination-prev">
+                <i class="fas fa-chevron-left"></i>
+                <span class="pagination-label">Previous</span>
+            </span>
+        </li>
+        {% endif %}
+
+        <!-- Page Numbers -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if num == page_obj.number %}
+            <li class="pagination-item active">
+                <span class="pagination-link" aria-current="page">
+                    {{ num }}
+                </span>
+            </li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+            <li class="pagination-item">
+                <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
+                   class="pagination-link">
+                    {{ num }}
+                </a>
+            </li>
+            {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+            <li class="pagination-item ellipsis">
+                <span class="pagination-link">…</span>
+            </li>
+            {% endif %}
+        {% endfor %}
+
+        <!-- Next Page -->
+        {% if page_obj.has_next %}
+        <li class="pagination-item">
+            <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}" 
+               class="pagination-link pagination-next" 
+               aria-label="Next page">
+                <span class="pagination-label">Next</span>
+                <i class="fas fa-chevron-right"></i>
+            </a>
+        </li>
+        {% else %}
+        <li class="pagination-item disabled">
+            <span class="pagination-link pagination-next">
+                <span class="pagination-label">Next</span>
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </li>
+        {% endif %}
+    </ul>
+
+    <!-- Info -->
+    <div class="pagination-info">
+        <span>
+            Showing <strong>{{ page_obj.start_index }}</strong> 
+            to <strong>{{ page_obj.end_index }}</strong> 
+            of <strong>{{ page_obj.paginator.count }}</strong> 
+            result{{ page_obj.paginator.count|pluralize }}
+        </span>
+    </div>
+</nav>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pagination.js' %}" defer></script>
+{% endblock %}
+{% endif %}
