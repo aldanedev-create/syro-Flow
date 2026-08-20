@@ -27,7 +27,7 @@ else:
 # Initialize environment variables
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1', '.vercel.app']),
+    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app'])    
     SITE_NAME=(str, 'Syro Flow'),
     SITE_DESCRIPTION=(str, 'A content management and donation platform'),
     SECURE_SSL_REDIRECT=(bool, True),
