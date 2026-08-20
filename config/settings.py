@@ -255,11 +255,6 @@ LOGGING = {
     },
 }
 
-# Ensure logs directory exists
-LOG_DIR = BASE_DIR / 'logs'
-if not LOG_DIR.exists():
-    LOG_DIR.mkdir(parents=True)
-
 # Email Configuration
 # In DEBUG mode, mail is printed to the console unless EMAIL_HOST is explicitly set.
 if DEBUG and not env('EMAIL_HOST', default=None):
