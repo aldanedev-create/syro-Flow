@@ -26,9 +26,8 @@ else:
 
 # Initialize environment variables
 env = environ.Env(
-    # Set casting, default value
     DEBUG=(bool, False),
-    ALLOWED_HOSTS=(list, []),
+    ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1', '.vercel.app']),
     SITE_NAME=(str, 'Syro Flow'),
     SITE_DESCRIPTION=(str, 'A content management and donation platform'),
     SECURE_SSL_REDIRECT=(bool, True),
@@ -53,7 +52,7 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-your-secret-key-here')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=False)
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app'])
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app', '*'])
 
 # Site Information
 SITE_NAME = env('SITE_NAME')
@@ -104,7 +103,7 @@ ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.DjangoTemplates',
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
