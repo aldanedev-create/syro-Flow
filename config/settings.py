@@ -236,11 +236,6 @@ LOGGING = {
             'class': 'logging.StreamHandler',
             'formatter': 'simple',
         },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': BASE_DIR / 'logs' / 'syro_flow.log',
-            'formatter': 'verbose',
-        },
     },
     'root': {
         'handlers': ['console'],
