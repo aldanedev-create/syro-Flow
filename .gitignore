@@ -119,11 +119,6 @@ Desktop.ini
 *.tmp
 *.temp
 
-# Vercel
-.vercel/
-.vercel_output/
-vercel.json
-.vercelignore
 
 # Logs
 logs/
