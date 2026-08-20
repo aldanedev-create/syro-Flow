@@ -24,10 +24,10 @@ else:
     LOG_DIR = BASE_DIR / "logs"
     LOG_DIR.mkdir(parents=True, exist_ok=True)
 
-# Initialize environment variables
+# Initialize environment variables schema
 env = environ.Env(
     DEBUG=(bool, False),
-    ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app'])    
+    ALLOWED_HOSTS=(list, ['localhost', '127.0.0.1', '.vercel.app']),
     SITE_NAME=(str, 'Syro Flow'),
     SITE_DESCRIPTION=(str, 'A content management and donation platform'),
     SECURE_SSL_REDIRECT=(bool, True),
@@ -52,7 +52,11 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-your-secret-key-here')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=False)
 
-ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app', '*'])
+# Parse ALLOWED_HOSTS and dynamically append wildcard Vercel matching
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app'])
+for host in ['.vercel.app', '*']:
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 
 # Site Information
 SITE_NAME = env('SITE_NAME')
