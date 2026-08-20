@@ -1,0 +1,113 @@
+    .error-page {
+        padding: 80px 0;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .error-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .error-icon {
+        font-size: 80px;
+        color: var(--primary-color);
+        margin-bottom: 20px;
+    }
+    .error-code {
+        font-size: 120px;
+        font-weight: 800;
+        color: var(--primary-color);
+        margin: 0;
+        line-height: 1;
+    }
+    .error-title {
+        font-size: 32px;
+        margin: 20px 0 10px;
+        color: var(--text-color);
+    }
+    .error-message {
+        font-size: 18px;
+        color: var(--text-muted);
+        margin-bottom: 30px;
+    }
+    .error-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .error-suggestions {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
+    }
+    .error-suggestions ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .error-suggestions ul li a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    .error-suggestions ul li a:hover {
+        text-decoration: underline;
+    }
+
+
+/* --- appended from templates/500.html --- */
+    .error-page {
+        padding: 80px 0;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .error-content {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    .error-icon {
+        font-size: 80px;
+        color: #dc3545;
+        margin-bottom: 20px;
+    }
+    .error-code {
+        font-size: 120px;
+        font-weight: 800;
+        color: #dc3545;
+        margin: 0;
+        line-height: 1;
+    }
+    .error-title {
+        font-size: 32px;
+        margin: 20px 0 10px;
+        color: var(--text-color);
+    }
+    .error-message {
+        font-size: 18px;
+        color: var(--text-muted);
+        margin-bottom: 30px;
+    }
+    .error-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    .error-contact {
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
+    }
+    .error-contact a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    .error-contact a:hover {
+        text-decoration: underline;
+    }
