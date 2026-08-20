@@ -17,6 +17,13 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Logging directory configuration (handles Vercel read-only filesystem)
+if os.environ.get("VERCEL"):
+    LOG_DIR = Path("/tmp")
+else:
+    LOG_DIR = BASE_DIR / "logs"
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+
 # Initialize environment variables
 env = environ.Env(
     # Set casting, default value
@@ -35,13 +42,7 @@ env = environ.Env(
 # Read .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# Some platforms (Vercel included) let you add an environment variable key
-# in their dashboard without typing a value, which sets it to an empty
-# string rather than leaving it truly unset. django-environ then tries to
-# cast that empty string to int/bool and crashes (e.g. EMAIL_PORT='') or
-# silently resolves a blank bool to False instead of its intended default
-# (e.g. SECURE_SSL_REDIRECT='' silently disabling SSL redirect). Treat any
-# blank env var as unset so the env() defaults below apply as intended.
+# Treat blank environment variables as unset so defaults apply
 for _key, _value in list(os.environ.items()):
     if _value == '':
         del os.environ[_key]
@@ -52,7 +53,7 @@ SECRET_KEY = env('SECRET_KEY', default='django-insecure-your-secret-key-here')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG', default=False)
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
+ALLOWED_HOSTS = env('ALLOWED_HOSTS', default=['localhost', '127.0.0.1', '.vercel.app'])
 
 # Site Information
 SITE_NAME = env('SITE_NAME')
@@ -87,9 +88,6 @@ LOCAL_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-# Custom User Model (optional - uncomment if you create custom user)
-# AUTH_USER_MODEL = 'core.CustomUser'
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
@@ -106,7 +104,7 @@ ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'BACKEND': 'django.template.backends.DjangoTemplates',
         'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -126,15 +124,11 @@ WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
 
 # Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
 DATABASES = {
     'default': env.db_url('DATABASE_URL', default='sqlite:///db.sqlite3')
 }
 
 # Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -154,18 +148,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = env('TIME_ZONE', default='UTC')
 USE_I18N = True
 USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = env('STATIC_URL', default='/static/')
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = Path('/tmp/staticfiles') if os.environ.get('VERCEL') else BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
@@ -173,15 +163,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (User uploaded files)
 MEDIA_URL = env('MEDIA_URL', default='/media/')
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = Path('/tmp/media') if os.environ.get('VERCEL') else BASE_DIR / 'media'
 
 # File Upload Settings
 MAX_UPLOAD_SIZE = env('MAX_UPLOAD_SIZE', default=10485760)  # 10MB in bytes
 ALLOWED_IMAGE_TYPES = env('ALLOWED_IMAGE_TYPES', default='jpg,jpeg,png,gif,webp')
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Admin URL
@@ -217,13 +205,13 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
-# Logging Configuration
+# Logging Configuration (Console stream for Vercel runtime ingestion)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'format': '{levelname} {asctime} {name} {message}',
             'style': '{',
         },
         'simple': {
@@ -234,7 +222,7 @@ LOGGING = {
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'simple',
+            'formatter': 'verbose',
         },
     },
     'root': {
@@ -256,7 +244,6 @@ LOGGING = {
 }
 
 # Email Configuration
-# In DEBUG mode, mail is printed to the console unless EMAIL_HOST is explicitly set.
 if DEBUG and not env('EMAIL_HOST', default=None):
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
@@ -268,18 +255,12 @@ else:
     EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', default='')
 
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL', default='noreply@syroflow.com')
-
-# Contact form recipient email
 CONTACT_EMAIL = env('CONTACT_EMAIL', default=DEFAULT_FROM_EMAIL)
 
 # Cache Settings
-# Defaults to a local in-memory cache so caching works out of the box with
-# no extra services. Set CACHE_URL (e.g. redis://127.0.0.1:6379/1) in .env
-# to use Redis/Memcached in production.
 CACHES = {
     'default': env.cache_url('CACHE_URL', default='locmemcache://'),
 }
 
-# How long (seconds) cached pages/fragments are kept. Overridable via .env.
-CACHE_MIDDLEWARE_SECONDS = env.int('CACHE_MIDDLEWARE_SECONDS', default=60 * 15)  # 15 minutes
+CACHE_MIDDLEWARE_SECONDS = env.int('CACHE_MIDDLEWARE_SECONDS', default=60 * 15)
 CACHE_MIDDLEWARE_KEY_PREFIX = env('CACHE_MIDDLEWARE_KEY_PREFIX', default='syroflow')
