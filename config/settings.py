@@ -35,6 +35,17 @@ env = environ.Env(
 # Read .env file
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
+# Some platforms (Vercel included) let you add an environment variable key
+# in their dashboard without typing a value, which sets it to an empty
+# string rather than leaving it truly unset. django-environ then tries to
+# cast that empty string to int/bool and crashes (e.g. EMAIL_PORT='') or
+# silently resolves a blank bool to False instead of its intended default
+# (e.g. SECURE_SSL_REDIRECT='' silently disabling SSL redirect). Treat any
+# blank env var as unset so the env() defaults below apply as intended.
+for _key, _value in list(os.environ.items()):
+    if _value == '':
+        del os.environ[_key]
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env('SECRET_KEY', default='django-insecure-your-secret-key-here')
 
