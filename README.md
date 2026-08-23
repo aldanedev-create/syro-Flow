@@ -285,12 +285,22 @@ Visit `http://localhost:8000` to view the site and `http://localhost:8000/admin`
 | `STATIC_URL` | Static files URL | No |
 | `MEDIA_URL` | Media files URL | No |
 | `MAX_UPLOAD_SIZE` | Max file upload size (bytes) | No |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob token for persistent media | Required on Vercel |
+| `VERCEL_BLOB_ACCESS` | Blob access mode; use `public` for gallery images | No |
 
 ### Database URL Format
 
 ```
 postgresql://username:password@host:5432/database_name
 ```
+
+### Persistent media on Vercel
+
+Vercel's local filesystem is temporary, so production uploads must use Vercel Blob. Create a Blob store from the project's **Storage** tab, choose **Public** for publicly displayed gallery images, and connect the store to this project. Vercel will provide `BLOB_READ_WRITE_TOKEN` automatically in the selected environments.
+
+The Django media backend detects that token and uploads files through the Vercel Python SDK. Local development continues to use the `media/` directory when the token is absent. Do not commit the token to GitHub.
+
+Vercel server uploads are limited to 4 MB by this project to stay below Vercel's 4.5 MB Function request limit. Larger uploads should use a client-upload flow.
 
 ---
 

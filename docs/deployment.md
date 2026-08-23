@@ -4,6 +4,18 @@
 
 Vercel's filesystem is ephemeral. Configure an S3-compatible bucket for uploaded media before using the CMS in production:
 
+### Recommended: Vercel Blob
+
+Create a **public** Blob store in the Vercel project's Storage tab and connect it to the project. Vercel will add `BLOB_READ_WRITE_TOKEN` to the selected environments. This Django project automatically uses the Vercel Python SDK when that variable exists.
+
+Set `VERCEL_BLOB_ACCESS=public` for gallery images. Public Blob URLs are used directly by the site's image tags.
+
+Vercel server uploads are limited to 4.5 MB, so this project defaults to a 4 MB maximum upload size on Vercel. Larger uploads need client uploads.
+
+### Alternative: S3-compatible storage
+
+If you prefer S3, configure these variables instead:
+
 - `AWS_STORAGE_BUCKET_NAME`
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`

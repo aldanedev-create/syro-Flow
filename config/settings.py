@@ -185,13 +185,20 @@ AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default='')
 AWS_S3_ENDPOINT_URL = env('AWS_S3_ENDPOINT_URL', default='')
 AWS_S3_CUSTOM_DOMAIN = env('AWS_S3_CUSTOM_DOMAIN', default='')
 AWS_QUERYSTRING_AUTH = env.bool('AWS_QUERYSTRING_AUTH', default=False)
+VERCEL_BLOB_TOKEN = env('BLOB_READ_WRITE_TOKEN', default='')
+VERCEL_BLOB_ACCESS = env('VERCEL_BLOB_ACCESS', default='public')
 
 STORAGES = {
     'default': {'BACKEND': 'django.core.files.storage.FileSystemStorage'},
     'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
 }
 
-if AWS_STORAGE_BUCKET_NAME:
+if VERCEL_BLOB_TOKEN:
+    STORAGES['default'] = {
+        'BACKEND': 'apps.media_library.storage.VercelBlobStorage',
+    }
+    MEDIA_ROOT = None
+elif AWS_STORAGE_BUCKET_NAME:
     # Use durable object storage on Vercel (S3, Cloudflare R2, or compatible).
     STORAGES['default'] = {
         'BACKEND': 'storages.backends.s3.S3Storage',
@@ -213,7 +220,10 @@ else:
     MEDIA_ROOT = Path('/tmp/media') if os.environ.get('VERCEL') else BASE_DIR / 'media'
 
 # File Upload Settings
-MAX_UPLOAD_SIZE = env('MAX_UPLOAD_SIZE', default=10485760)  # 10MB in bytes
+MAX_UPLOAD_SIZE = env(
+    'MAX_UPLOAD_SIZE',
+    default=4 * 1024 * 1024 if os.environ.get('VERCEL') else 10 * 1024 * 1024,
+)  # Keep Vercel server uploads below its 4.5MB function limit.
 ALLOWED_IMAGE_TYPES = env('ALLOWED_IMAGE_TYPES', default='jpg,jpeg,png,gif,webp')
 ALLOWED_FILE_TYPES = env('ALLOWED_FILE_TYPES', default='jpg,jpeg,png,gif,webp,svg,pdf,doc,docx,mp4,mp3')
 
