@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ category.name }} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Category: {{ category.name }}</h1>
+    {% if category.description %}
+    <p class="page-description">{{ category.description }}</p>
+    {% endif %}
+    <div class="category-stats">
+        <span class="stat">{{ posts|length }} post{{ posts|pluralize }}</span>
+    </div>
+</div>
+
+<!-- Categories Navigation -->
+<div class="categories-nav">
+    <a href="{% url 'posts:list' %}" class="filter-link">All Posts</a>
+    {% for cat in nav_categories %}
+    <a href="{% url 'posts:category' slug=cat.slug %}" 
+       class="filter-link {% if cat.slug == category.slug %}active{% endif %}">
+        {{ cat.name }}
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Posts Grid -->
+{% if posts %}
+<div class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card">
+        {% if post.featured_image %}
+        <div class="post-card-image">
+            <img src="{{ post.featured_image.file.url }}" alt="{{ post.featured_image.alt_text|default:post.title }}" loading="lazy">
+        </div>
+        {% endif %}
+        <div class="post-card-body">
+            <h2 class="post-card-title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </h2>
+            <p class="post-card-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+            <div class="post-card-meta">
+                <span class="post-card-date">
+                    <i class="far fa-calendar-alt"></i> {{ post.published_at|date:"M d, Y" }}
+                </span>
+                <span class="post-card-author">
+                    <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+                </span>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+{% include 'includes/pagination.html' %}
+
+{% else %}
+<div class="empty-state text-center">
+    <i class="fas fa-folder-open"></i>
+    <h3>No posts in this category</h3>
+    <p>Check back soon for new content.</p>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/category.css' %}">
+{% endblock %}

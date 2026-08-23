@@ -1,0 +1,113 @@
+{% load static %}
+
+<footer class="footer" role="contentinfo">
+    <div class="footer-container">
+        <div class="footer-grid">
+            <!-- About Column -->
+            <div class="footer-column">
+                <h3 class="footer-heading">{{ site_name }}</h3>
+                <p class="footer-description">
+                    {{ site_description|default:"A content management and donation platform dedicated to sharing teachings and building community." }}
+                </p>
+                <div class="footer-social">
+                    {% if site_settings.facebook_url %}
+                    <a href="{{ site_settings.facebook_url }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    {% endif %}
+                    {% if site_settings.twitter_url %}
+                    <a href="{{ site_settings.twitter_url }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    {% endif %}
+                    {% if site_settings.instagram_url %}
+                    <a href="{{ site_settings.instagram_url }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    {% endif %}
+                    {% if site_settings.youtube_url %}
+                    <a href="{{ site_settings.youtube_url }}" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="footer-column">
+                <h4 class="footer-heading">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'posts:list' %}">Posts</a></li>
+                    <li><a href="{% url 'media_library:gallery' %}">Gallery</a></li>
+                    <li><a href="{% url 'donations:index' %}">Donations</a></li>
+                    <li><a href="{% url 'pages:detail' slug='about' %}">About</a></li>
+                    <li><a href="{% url 'pages:contact' %}">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Categories -->
+            <div class="footer-column">
+                <h4 class="footer-heading">Categories</h4>
+                <ul class="footer-links">
+                    {% for category in nav_categories|slice:":6" %}
+                    {% if category.slug != 'rebuke' %}
+                    <li><a href="{% url 'posts:category' slug=category.slug %}">{{ category.name }}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                    <li><a href="{% url 'rebuke:index' %}" class="rebuke-link">Rebuke</a></li>
+                </ul>
+            </div>
+
+            <!-- Contact -->
+            <div class="footer-column">
+                <h4 class="footer-heading">Contact</h4>
+                <ul class="footer-contact">
+                    {% if site_settings.email %}
+                    <li>
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:{{ site_settings.email }}">{{ site_settings.email }}</a>
+                    </li>
+                    {% endif %}
+                    {% if site_settings.phone %}
+                    <li>
+                        <i class="fas fa-phone"></i>
+                        <span>{{ site_settings.phone }}</span>
+                    </li>
+                    {% endif %}
+                    {% if site_settings.address %}
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>{{ site_settings.address }}</span>
+                    </li>
+                    {% endif %}
+                    <li>
+                        <i class="fas fa-hand-holding-heart"></i>
+                        <a href="{% url 'donations:index' %}">Support Us</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                {{ site_settings.copyright_text|default:"&copy; 2024 Syro Flow. All rights reserved."|safe }}
+            </div>
+            <div class="footer-legal">
+                <a href="#" onclick="event.preventDefault();">Privacy Policy</a>
+                <span class="separator">|</span>
+                <a href="#" onclick="event.preventDefault();">Terms of Service</a>
+                <span class="separator">|</span>
+                <a href="#" onclick="event.preventDefault();">Cookie Policy</a>
+            </div>
+            <div class="footer-credit">
+                <span>Powered by <a href="https://www.djangoproject.com/" target="_blank" rel="noopener noreferrer">Django</a></span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/footer.css' %}">
+{% endblock %}

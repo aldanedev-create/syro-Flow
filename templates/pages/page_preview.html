@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - {{ site_name }}{% endblock %}
+
+{% block content %}
+{% if not page.is_published %}
+<div class="alert alert-warning">
+    This page is a <strong>draft</strong> and is not publicly visible.
+</div>
+{% endif %}
+
+<div class="page-content">
+    <div class="page-header">
+        <h1 class="page-title">{{ page.title }}</h1>
+    </div>
+
+    <div class="page-body">
+        {{ page.content|safe }}
+    </div>
+
+    {% if page.sections.all %}
+    <div class="page-sections">
+        {% for section in page.sections.all %}
+        <div class="page-section">
+            <h2>{{ section.title }}</h2>
+            <div class="page-section-content">
+                {{ section.content|safe }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

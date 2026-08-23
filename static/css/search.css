@@ -1,0 +1,140 @@
+    .page-header {
+        text-align: center;
+        padding: 30px 0 20px;
+    }
+    .page-title {
+        font-size: 36px;
+        font-weight: 700;
+        margin-bottom: 10px;
+    }
+    .page-description {
+        color: var(--text-muted);
+        font-size: 18px;
+    }
+    
+    .search-section {
+        max-width: 600px;
+        margin: 30px auto;
+    }
+    .search-input-group {
+        display: flex;
+        gap: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .search-input {
+        flex: 1;
+        padding: 15px 20px;
+        border: 2px solid var(--border-color);
+        border-right: none;
+        font-size: 16px;
+        background: var(--input-bg);
+        color: var(--text-color);
+        outline: none;
+        transition: border-color 0.3s;
+    }
+    .search-input:focus {
+        border-color: var(--primary-color);
+    }
+    .search-btn {
+        padding: 15px 30px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.3s;
+        white-space: nowrap;
+    }
+    .search-btn:hover {
+        background: var(--primary-dark);
+    }
+    
+    .results-info {
+        text-align: center;
+        color: var(--text-muted);
+        margin: 20px 0 30px;
+        font-size: 15px;
+    }
+    
+    .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+        margin-bottom: 40px;
+    }
+    
+    .empty-state {
+        padding: 60px 20px;
+    }
+    .empty-state i {
+        font-size: 60px;
+        color: var(--text-muted);
+        margin-bottom: 20px;
+    }
+    .empty-state h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+    .empty-state p {
+        color: var(--text-muted);
+        margin-bottom: 20px;
+    }
+    
+    .suggested-categories {
+        margin-top: 50px;
+        padding-top: 30px;
+        border-top: 1px solid var(--border-color);
+        text-align: center;
+    }
+    .suggested-categories h4 {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--text-muted);
+    }
+    .categories-list {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .category-pill {
+        display: inline-block;
+        padding: 6px 16px;
+        background: var(--card-bg);
+        color: var(--text-color);
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        border: 1px solid var(--border-color);
+        transition: all 0.3s;
+    }
+    .category-pill:hover {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+    
+    @media (max-width: 768px) {
+        .page-title {
+            font-size: 28px;
+        }
+        .search-input-group {
+            flex-direction: column;
+            border-radius: 8px;
+        }
+        .search-input {
+            border-right: 2px solid var(--border-color);
+            border-bottom: none;
+            border-radius: 8px 8px 0 0;
+        }
+        .search-btn {
+            border-radius: 0 0 8px 8px;
+        }
+        .posts-grid {
+            grid-template-columns: 1fr;
+        }
+    }

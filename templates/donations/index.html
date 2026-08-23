@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - {{ site_name }}{% endblock %}
+{% block meta_description %}{{ page_description }}{% endblock %}
+
+{% block content %}
+<div class="donations-page">
+    <div class="page-header">
+        <h1 class="page-title">Support Our Mission</h1>
+        <p class="page-description">{{ page_description }}</p>
+    </div>
+
+    <div class="donation-summary">
+        <div class="donation-stat">
+            <span class="stat-value">{{ total_raised }} {{ settings.currency }}</span>
+            <span class="stat-label">Total Raised</span>
+        </div>
+        <div class="donation-stat">
+            <span class="stat-value">{{ donation_count }}</span>
+            <span class="stat-label">Donation{{ donation_count|pluralize }}</span>
+        </div>
+    </div>
+
+    <div class="donate-cta">
+        <a href="{% url 'donations:donate' %}" class="btn btn-primary btn-lg">Donate Now</a>
+    </div>
+
+    <!-- Payment / Bank Details -->
+    <div class="card donation-details">
+        <div class="card-body">
+            <h2>How to Give</h2>
+            <dl class="bank-details">
+                <dt>Bank Name</dt>
+                <dd>{{ settings.bank_name }}</dd>
+                <dt>Account Name</dt>
+                <dd>{{ settings.account_name }}</dd>
+                <dt>Account Number</dt>
+                <dd>{{ settings.account_number }}</dd>
+                {% if settings.branch %}
+                <dt>Branch</dt>
+                <dd>{{ settings.branch }}</dd>
+                {% endif %}
+                {% if settings.mobile_money_number %}
+                <dt>Mobile Money</dt>
+                <dd>{{ settings.mobile_money_number }}</dd>
+                {% endif %}
+                {% if settings.paypal_email %}
+                <dt>PayPal</dt>
+                <dd>{{ settings.paypal_email }}</dd>
+                {% endif %}
+            </dl>
+        </div>
+    </div>
+
+    <!-- Active Goals -->
+    {% if goals %}
+    <div class="donation-goals-section">
+        <h2>Current Goals</h2>
+        <div class="goals-grid">
+            {% for goal in goals %}
+            <div class="card goal-card">
+                <div class="card-body">
+                    <h3 class="card-title">
+                        <a href="{% url 'donations:goal_detail' pk=goal.pk %}">{{ goal.title }}</a>
+                    </h3>
+                    <div class="goal-progress">
+                        <div class="goal-progress-bar" style="width: {{ goal.get_progress_percentage }}%;"></div>
+                    </div>
+                    <p class="card-meta">{{ goal.raised_amount }} / {{ goal.target_amount }} {{ goal.currency }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'donations:goals' %}" class="btn btn-secondary">View All Goals</a>
+    </div>
+    {% endif %}
+
+    <!-- Recent Donations -->
+    {% if recent_donations %}
+    <div class="recent-donations-section">
+        <h2>Recent Donations</h2>
+        <ul class="donations-list">
+            {% for donation in recent_donations %}
+            <li>
+                <strong>{{ donation.donor_name }}</strong>
+                &mdash; {{ donation.amount }} {{ donation.currency }}
+                <span class="text-muted">{{ donation.created_at|date:"M d, Y" }}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rebuke.css' %}">
+{% endblock %}

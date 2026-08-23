@@ -1,0 +1,31 @@
+:root {
+    --primary: #635bff;
+    --primary-dark: #4f46e5;
+}
+
+#header {
+    background: #17152f;
+    padding: 14px 24px;
+}
+
+#branding h1, #branding h1 a:link, #branding h1 a:visited { color: #fff; }
+
+.sf-admin-brand { display: flex; align-items: center; gap: 11px; }
+.sf-admin-mark {
+    display: grid; place-items: center; width: 36px; height: 36px;
+    border-radius: 11px; background: linear-gradient(135deg, #8b83ff, #635bff);
+    color: #fff; font-size: 20px; font-weight: 700;
+}
+.sf-admin-name { color: #fff; font-size: 16px; font-weight: 700; line-height: 1; }
+.sf-admin-subtitle { color: #aaa7c9; font-size: 11px; margin-top: 4px; }
+.sf-view-site { color: #c9c6ff !important; font-weight: 600; }
+
+#content { max-width: 1440px; }
+.module h2, .module caption, .inline-group h2 { background: #211e46; }
+.button, input[type=submit], input[type=button], .submit-row input, a.button {
+    background: var(--primary); border-radius: 8px;
+}
+.button:hover, input[type=submit]:hover, input[type=button]:hover, .submit-row input:hover, a.button:hover {
+    background: var(--primary-dark);
+}
+.object-tools a { border-radius: 7px; }

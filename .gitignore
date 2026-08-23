@@ -1,0 +1,212 @@
+# Python
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+pythonenv*
+venv*
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+*.pyre
+*.log
+*.pot
+*.pyi
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django
+*.log
+*.pot
+*.pyc
+__pycache__/
+db.sqlite3
+db.sqlite3-journal
+media/
+
+
+*.sqlite3
+*.sqlite3-journal
+
+# Environment Variables
+.env
+.env.local
+.env.prod
+.env.dev
+.env.*.local
+*.env
+
+# VSCode
+.vscode/
+*.code-workspace
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+.history/
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+*.swp
+*.swo
+*~
+.DS_Store
+.cache/
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+.vscode/
+.idea/
+
+# Version Control
+*.orig
+*.rej
+*.patch
+*.merge
+*.diff
+
+# Secrets and Keys
+*.pem
+*.key
+*.crt
+*.csr
+*.pub
+*.priv
+*.p12
+*.pfx
+
+# Database
+*.mdb
+*.accdb
+*.fdb
+*.db
+*.sqlite
+*.sqlite3
+
+# Backups
+*.bak
+*.backup
+*.tmp
+*.temp
+*.swp
+*~
+
+# OS Generated
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Thumbs.db:encryptable
+Desktop.ini
+*.tmp
+*.temp
+
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Testing
+.coverage
+.coverage.*
+.coverage*
+htmlcov/
+.coverage.*
+.tox/
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+tests/reports/
+test-reports/
+
+# Node (if any frontend tooling)
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# Docker
+*.pid
+docker-compose.override.yml
+docker-compose.*.yml
+.docker/
+Dockerfile.*
+*.dockerfile
+
+# Temporary Files
+tmp/
+temp/
+cookies.txt
+*.sock
+*.socket
+*.pid
+*.seed
+*.pid.lock
+*.id
+
+# Build Artifacts
+dist/
+build/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Migrations (Optional - comment out if you want migrations tracked)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Screenshots
+screenshots/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.bmp
+
+# Project Specific
+media/
+staticfiles/
+static/*.map
+*.mo
+*.po~
+local_settings.py
+__pypackages__/
+*.prof
+*.heapsnapshot
+.vercel
+.env*

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="transaction-status-page">
+    <div class="page-header">
+        <h1 class="page-title">Transaction Status</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="transaction-details">
+                <dt>Transaction ID</dt>
+                <dd>{{ transaction.transaction_id }}</dd>
+
+                <dt>Status</dt>
+                <dd>
+                    <span class="badge">{{ transaction.get_status_display }}</span>
+                </dd>
+
+                <dt>Amount</dt>
+                <dd>{{ transaction.get_amount_display }}</dd>
+
+                <dt>Date</dt>
+                <dd>{{ transaction.created_at|date:"M d, Y H:i" }}</dd>
+            </dl>
+        </div>
+    </div>
+
+    <a href="{% url 'donations:index' %}" class="btn btn-secondary">Back to Donations</a>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rebuke-detail.css' %}">
+{% endblock %}

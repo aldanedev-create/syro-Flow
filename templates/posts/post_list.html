@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}All Posts - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">All Posts</h1>
+    <p class="page-description">Browse our collection of articles and teachings</p>
+</div>
+
+<!-- Search and Filter -->
+<div class="posts-toolbar">
+    <form method="get" action="{% url 'posts:search' %}" class="search-form">
+        <input type="text" name="q" placeholder="Search posts..." value="{{ request.GET.q|default:'' }}">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+    <div class="categories-filter">
+        <a href="{% url 'posts:list' %}" class="filter-link {% if not request.GET.category %}active{% endif %}">All</a>
+        {% for category in nav_categories %}
+        <a href="{% url 'posts:category' slug=category.slug %}" class="filter-link">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Posts Grid -->
+{% if posts %}
+<div class="posts-grid">
+    {% for post in posts %}
+    <article class="post-card">
+        {% if post.featured_image %}
+        <div class="post-card-image">
+            <img src="{{ post.featured_image.file.url }}" alt="{{ post.featured_image.alt_text|default:post.title }}" loading="lazy">
+        </div>
+        {% endif %}
+        <div class="post-card-body">
+            {% if post.category %}
+            <span class="post-card-category">{{ post.category.name }}</span>
+            {% endif %}
+            <h2 class="post-card-title">
+                <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+            </h2>
+            <p class="post-card-excerpt">{{ post.excerpt|truncatewords:20 }}</p>
+            <div class="post-card-meta">
+                <span class="post-card-date">
+                    <i class="far fa-calendar-alt"></i> {{ post.published_at|date:"M d, Y" }}
+                </span>
+                <span class="post-card-author">
+                    <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+                </span>
+                <span class="post-card-read-time">
+                    <i class="far fa-clock"></i> {{ post.get_reading_time }} min read
+                </span>
+            </div>
+        </div>
+    </article>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% include 'includes/pagination.html' %}
+
+{% else %}
+<div class="empty-state text-center">
+    <i class="fas fa-book-open"></i>
+    <h3>No posts found</h3>
+    <p>Check back soon for new content.</p>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/post-list.css' %}">
+{% endblock %}

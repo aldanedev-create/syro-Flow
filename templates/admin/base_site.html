@@ -1,0 +1,21 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="sf-admin-brand">
+    <span class="sf-admin-mark">S</span>
+    <div>
+        <div class="sf-admin-name">Syro Flow</div>
+        <div class="sf-admin-subtitle">Content studio</div>
+    </div>
+</div>
+{% endblock %}
+
+{% block nav-global %}
+<a class="sf-view-site" href="{% url 'home' %}">View live site <span aria-hidden="true">↗</span></a>
+{% endblock %}

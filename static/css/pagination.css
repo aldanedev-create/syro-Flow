@@ -1,0 +1,117 @@
+    .pagination {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 20px 0;
+        margin: 20px 0;
+    }
+
+    .pagination-list {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        gap: 6px;
+        align-items: center;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .pagination-item {
+        display: inline-block;
+        margin: 0;
+    }
+    .pagination-item.disabled {
+        opacity: 0.4;
+        pointer-events: none;
+    }
+    .pagination-item.active .pagination-link {
+        background: var(--primary-color, #4f46e5);
+        color: #ffffff;
+        border-color: var(--primary-color, #4f46e5);
+        cursor: default;
+    }
+    .pagination-item.ellipsis .pagination-link {
+        background: transparent;
+        border: none;
+        cursor: default;
+        color: var(--text-muted, #6b7280);
+    }
+
+    .pagination-link {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color, #e5e7eb);
+        background: var(--card-bg, #ffffff);
+        color: var(--text-color, #1a1a2e);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+        min-width: 36px;
+        justify-content: center;
+    }
+    .pagination-link:hover {
+        background: var(--hover-bg, #f3f4f6);
+        border-color: var(--primary-color, #4f46e5);
+        color: var(--primary-color, #4f46e5);
+    }
+    .pagination-link i {
+        font-size: 12px;
+    }
+
+    .pagination-prev,
+    .pagination-next {
+        padding: 8px 16px;
+    }
+
+    .pagination-label {
+        font-size: 14px;
+    }
+
+    .pagination-info {
+        font-size: 14px;
+        color: var(--text-muted, #6b7280);
+    }
+    .pagination-info strong {
+        color: var(--text-color, #1a1a2e);
+        font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 576px) {
+        .pagination-link {
+            padding: 6px 10px;
+            font-size: 13px;
+            min-width: 32px;
+        }
+        .pagination-prev,
+        .pagination-next {
+            padding: 6px 12px;
+        }
+        .pagination-label {
+            display: none;
+        }
+        .pagination-info {
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .pagination-list {
+            gap: 4px;
+        }
+        .pagination-link {
+            padding: 4px 8px;
+            font-size: 12px;
+            min-width: 28px;
+        }
+        .pagination-prev i,
+        .pagination-next i {
+            margin: 0;
+        }
+    }

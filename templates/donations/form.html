@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Donation Form - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="donation-form-page">
+    <div class="page-header">
+        <h1 class="page-title">Donation Form</h1>
+        <p class="page-description">Fill out the form below to make your donation.</p>
+    </div>
+
+    <form method="post" class="donation-form card">
+        {% csrf_token %}
+        <div class="card-body">
+            {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="alert alert-error">{{ field.errors }}</div>
+                {% endif %}
+                {% if field.help_text %}
+                <small class="text-muted">{{ field.help_text }}</small>
+                {% endif %}
+            </div>
+            {% endfor %}
+
+            {% if form.non_field_errors %}
+            <div class="alert alert-error">{{ form.non_field_errors }}</div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary">Submit Donation</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contact.css' %}">
+{% endblock %}

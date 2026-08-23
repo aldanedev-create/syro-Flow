@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Search Results - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Search Results</h1>
+    <p class="page-description">
+        {% if query %}
+        Showing results for "{{ query }}"
+        {% else %}
+        Enter a search term to find posts
+        {% endif %}
+    </p>
+</div>
+
+<!-- Search Form -->
+<div class="search-section">
+    <form method="get" action="{% url 'posts:search' %}" class="search-form-large">
+        <div class="search-input-group">
+            <input type="text" name="q" placeholder="Search posts..." value="{{ query|default:'' }}" class="search-input">
+            <button type="submit" class="search-btn"><i class="fas fa-search"></i> Search</button>
+        </div>
+    </form>
+</div>
+
+<!-- Results -->
+{% if query %}
+    {% if posts %}
+    <div class="results-info">
+        <span>Found {{ posts|length }} result{{ posts|pluralize }}</span>
+    </div>
+    
+    <div class="posts-grid">
+        {% for post in posts %}
+        <article class="post-card">
+            {% if post.featured_image %}
+            <div class="post-card-image">
+                <img src="{{ post.featured_image.file.url }}" alt="{{ post.featured_image.alt_text|default:post.title }}" loading="lazy">
+            </div>
+            {% endif %}
+            <div class="post-card-body">
+                {% if post.category %}
+                <span class="post-card-category">{{ post.category.name }}</span>
+                {% endif %}
+                <h2 class="post-card-title">
+                    <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+                </h2>
+                <p class="post-card-excerpt">
+                    {% with excerpt=post.excerpt %}
+                        {% if query %}
+                            {{ excerpt|truncatewords:25 }}
+                        {% else %}
+                            {{ excerpt|truncatewords:25 }}
+                        {% endif %}
+                    {% endwith %}
+                </p>
+                <div class="post-card-meta">
+                    <span class="post-card-date">
+                        <i class="far fa-calendar-alt"></i> {{ post.published_at|date:"M d, Y" }}
+                    </span>
+                    <span class="post-card-author">
+                        <i class="far fa-user"></i> {{ post.author.get_full_name|default:post.author.username }}
+                    </span>
+                </div>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    
+    {% include 'includes/pagination.html' %}
+    
+    {% else %}
+    <div class="empty-state text-center">
+        <i class="fas fa-search"></i>
+        <h3>No results found</h3>
+        <p>
+            We couldn't find any posts matching "{{ query }}".<br>
+            Try searching with different keywords or browse all posts.
+        </p>
+        <a href="{% url 'posts:list' %}" class="btn btn-primary">
+            <i class="fas fa-book-open"></i> Browse All Posts
+        </a>
+    </div>
+    {% endif %}
+{% else %}
+<div class="empty-state text-center">
+    <i class="fas fa-search"></i>
+    <h3>Search for Posts</h3>
+    <p>Enter a keyword or phrase to search through our articles and teachings.</p>
+</div>
+{% endif %}
+
+<!-- Suggested Categories -->
+<div class="suggested-categories">
+    <h4>Browse by Category</h4>
+    <div class="categories-list">
+        {% for category in nav_categories|slice:":8" %}
+        <a href="{% url 'posts:category' slug=category.slug %}" class="category-pill">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/search.css' %}">
+{% endblock %}

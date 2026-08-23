@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Donation Goals - {{ site_name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rebuke.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="goals-page">
+    <h1>Donation Goals</h1>
+
+    {% if goals %}
+    <div class="goals-grid">
+        {% for goal in goals %}
+        <div class="card goal-card">
+            <div class="card-body">
+                <h2 class="card-title">
+                    <a href="{% url 'donations:goal_detail' pk=goal.pk %}">{{ goal.title }}</a>
+                </h2>
+                <p class="card-excerpt">{{ goal.description|truncatewords:30 }}</p>
+                <div class="goal-progress">
+                    <div class="goal-progress-bar" style="width: {{ goal.get_progress_percentage }}%;"></div>
+                </div>
+                <div class="card-meta">
+                    <span>{{ goal.raised_amount }} {{ goal.currency }} raised of {{ goal.target_amount }} {{ goal.currency }}</span>
+                </div>
+                <a href="{% url 'donations:goal_detail' pk=goal.pk %}" class="btn btn-primary">View Goal</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-muted">There are no active donation goals right now. Check back soon.</p>
+    {% endif %}
+</div>
+{% endblock %}

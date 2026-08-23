@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gallery - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">Gallery</h1>
+    <p class="page-description">Explore our collection of images and media</p>
+</div>
+
+<!-- Search and Filter -->
+<div class="gallery-toolbar">
+    <form method="get" class="search-form">
+        <input type="text" name="search" placeholder="Search images..." value="{{ request.GET.search|default:'' }}">
+        <button type="submit"><i class="fas fa-search"></i></button>
+    </form>
+    <div class="category-filters">
+        <a href="{% url 'media_library:gallery' %}" class="filter-link {% if not request.GET.category %}active{% endif %}">
+            All
+        </a>
+        {% for category in categories %}
+        <a href="{% url 'media_library:category' slug=category.slug %}" class="filter-link">
+            {{ category.name }}
+        </a>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Gallery Grid -->
+{% if media_items %}
+<div class="gallery-grid">
+    {% for item in media_items %}
+    <a href="{% url 'media_library:detail' pk=item.pk %}" class="gallery-item">
+        <div class="gallery-image-wrapper">
+            <img src="{{ item.file.url }}" alt="{{ item.alt_text|default:item.title }}" loading="lazy">
+            <div class="gallery-overlay">
+                <div class="gallery-overlay-content">
+                    <h4 class="gallery-item-title">{{ item.title }}</h4>
+                    {% if item.caption %}
+                    <p class="gallery-item-caption">{{ item.caption|truncatewords:10 }}</p>
+                    {% endif %}
+                    <span class="gallery-item-view"><i class="fas fa-eye"></i> View</span>
+                </div>
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% include 'includes/pagination.html' %}
+
+{% else %}
+<div class="empty-state text-center">
+    <i class="fas fa-images"></i>
+    <h3>No images found</h3>
+    <p>Check back soon for new media.</p>
+</div>
+{% endif %}
+
+<!-- Upload Button (Admin only) -->
+{% if user.is_staff %}
+<div class="upload-section">
+    <a href="{% url 'media_library:upload' %}" class="btn btn-primary">
+        <i class="fas fa-upload"></i> Upload New Image
+    </a>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/gallery.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/gallery.js' %}" defer></script>
+{% endblock %}

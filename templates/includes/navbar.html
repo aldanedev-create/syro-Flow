@@ -1,0 +1,127 @@
+{% load static %}
+
+<nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar-container">
+        <!-- Brand/Logo -->
+        <div class="navbar-brand">
+            <a href="{% url 'home' %}" class="navbar-logo">
+                {% if site_settings and site_settings.site_logo %}
+                <img src="{{ site_settings.site_logo.url }}" alt="{{ site_name }}" class="logo-image">
+                {% else %}
+                <span class="logo-text">{{ site_name }}</span>
+                {% endif %}
+            </a>
+        </div>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span class="hamburger-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+
+        <!-- Navigation Links -->
+        <div class="navbar-menu" id="navbarMenu">
+            <ul class="navbar-nav">
+                <!-- Home -->
+                <li class="nav-item">
+                    <a href="{% url 'home' %}" class="nav-link {% if request.path == '/' %}active{% endif %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+
+                <!-- Posts -->
+                <li class="nav-item">
+                    <a href="{% url 'posts:list' %}" class="nav-link {% if 'posts' in request.path %}active{% endif %}">
+                        <i class="fas fa-book-open"></i> Posts
+                    </a>
+                </li>
+
+                <!-- Categories Dropdown -->
+                {% if nav_categories %}
+                <li class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle" data-dropdown="categoriesDropdown" aria-expanded="false" aria-controls="categoriesDropdown">
+                        <i class="fas fa-folder"></i> Categories <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="categoriesDropdown">
+                        {% for category in nav_categories %}
+                        {% if category.slug != 'rebuke' %}
+                        <a href="{% url 'posts:category' slug=category.slug %}" class="dropdown-item">
+                            <i class="fas fa-tag"></i> {{ category.name }}
+                        </a>
+                        {% endif %}
+                        {% endfor %}
+                        <!-- Rebuke special link -->
+                        <a href="{% url 'rebuke:index' %}" class="dropdown-item rebuke-link">
+                            <i class="fas fa-exclamation-triangle"></i> Rebuke
+                        </a>
+                    </div>
+                </li>
+                {% endif %}
+
+                <!-- Gallery -->
+                <li class="nav-item">
+                    <a href="{% url 'media_library:gallery' %}" class="nav-link {% if 'gallery' in request.path %}active{% endif %}">
+                        <i class="fas fa-images"></i> Gallery
+                    </a>
+                </li>
+
+                <!-- Pages Dropdown -->
+                {% if nav_pages %}
+                <li class="nav-item dropdown">
+                    <button class="nav-link dropdown-toggle" data-dropdown="pagesDropdown" aria-expanded="false" aria-controls="pagesDropdown">
+                        <i class="fas fa-file-alt"></i> Pages <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="pagesDropdown">
+                        {% for page in nav_pages %}
+                        <a href="{{ page.get_absolute_url }}" class="dropdown-item">
+                            <i class="fas fa-file"></i> {{ page.title }}
+                        </a>
+                        {% endfor %}
+                    </div>
+                </li>
+                {% endif %}
+
+                <!-- Donations -->
+                <li class="nav-item">
+                    <a href="{% url 'donations:index' %}" class="nav-link donate-link {% if 'donations' in request.path %}active{% endif %}">
+                        <i class="fas fa-hand-holding-heart"></i> Donate
+                    </a>
+                </li>
+
+                <!-- Search -->
+                <li class="nav-item search-item">
+                    <button class="nav-link search-toggle" aria-label="Toggle search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Search Overlay -->
+        <div class="search-overlay" id="searchOverlay">
+            <div class="search-container">
+                <form action="{% url 'posts:search' %}" method="get" class="search-form-overlay">
+                    <input type="text" name="q" placeholder="Search posts..." 
+                           class="search-input-overlay" autofocus>
+                    <button type="submit" class="search-btn-overlay">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button type="button" class="search-close" aria-label="Close search">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/navbar.css' %}">
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/navbar.js' %}" defer></script>
+{% endblock %}
